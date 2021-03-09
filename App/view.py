@@ -26,7 +26,6 @@
 import config as cf
 import sys
 import controller
-import model
 from DISClib.ADT import list as lt
 assert cf
 
@@ -91,11 +90,8 @@ while True:
             print("Estos son el top " + str(numberVideos)+ " videos encontrados para el pais y la categoria: ", result)
         
     elif int(inputs[0])== 3:
-        category = "Music"
-        catalogCC = model.createCatalog()
-        bestCountry = "canada"
-        bestCategoryid = "10"
-        print(model.addvideoFromCatalog(catalog,catalogCC,bestCountry,bestCategoryid))
+        bestCountry = input("Ingrese el pais sobre el cual quiere encontrar los mejores videos: ").lower()
+        
 
 
 

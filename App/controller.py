@@ -87,3 +87,6 @@ def bestVideosCategoryCountryViews(catalog,bestCountry,bestCategory,numberVideos
                 return -3
             else:
                 return topVideos
+
+def videoMoreTimeTrendingCountry(country):
+    pass
