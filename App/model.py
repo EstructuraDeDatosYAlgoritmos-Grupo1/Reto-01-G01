@@ -52,6 +52,11 @@ def createCatalog():
     catalog['categories'] = lt.newList(datastructure='ARRAY_LIST')
     return catalog
 
+def createCatalogOfCountry(catalog, country):
+    catalogCountry = createCatalog()
+    catalogCountry = addVideosFromCatalogByCountry(catalog,catalogCountry,country)
+    return catalogCountry
+
 
 #Funciones para agregar datos a un catalogo
 
@@ -63,13 +68,21 @@ def addCategory(catalog, category):
     lt.addLast(catalog['categories'], t)
 
 
-def addvideoFromCatalog(catalog,catalogCC,bestCountry,bestCategoryid):
+def addvideoFromCatalogByCountryCategory(catalog,bestCountry,bestCategoryid):
+    bestVideos = createCatalog()
+    for videoPos in range(1, lt.size(catalog["videos"])):
+        video = lt.getElement(catalog["videos"], videoPos)
+        if (video["country"]== bestCountry and int(video["category_id"])==int(bestCategoryid)):
+            addVideo(bestVideos, video)
+    return bestVideos
+
+def addVideosFromCatalogByCountry(catalog,catalogVideos,country):
     range1 = lt.size(catalog["videos"])
-    for position in range(1, range1 +1):
-        element = lt.getElement(catalog['videos'] , position)
-        if (element["country"] == bestCountry and element["category_id"]==bestCategoryid):
-            addVideo(catalogCC, element)
-    return catalogCC
+    for position in range(1, range1 + 1):
+        element = lt.getElement(catalog["videos"] , position)
+        if element["country"] == country:
+            addVideo(catalogVideos, element)
+    return catalogVideos
 
 
 #Funciones para crear datos
@@ -89,7 +102,20 @@ def findCategoryid(catalog, category):
             return element["id"]
     return -1
 
+def findTopVideoByTrendingTime(catalogCountry):
+    pass
 #Funciones para comparar elementos dentro de una lista
 
+def cmpVideosByViews(video1, video2):
+    if float(video1['views']) < float(video2['views']):
+        return True
+    else:
+        return False
 
 #Funciones de ordenamiento
+
+def mergeSortByViews(catalog,size):
+    subList = lt.subList(catalog["videos"],0,size)
+    subList = subList.copy()
+    sortedList = merge.sort(subList, cmpVideosByViews)
+    return sortedList

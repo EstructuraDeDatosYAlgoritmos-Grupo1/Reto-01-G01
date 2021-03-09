@@ -26,6 +26,7 @@
 import config as cf
 import sys
 import controller
+import model
 from DISClib.ADT import list as lt
 assert cf
 
@@ -61,6 +62,15 @@ def loadData(catalog):
     """
     controller.loadData(catalog)
 
+def printResults(catalogVideos, sample):
+    size = lt.size(catalogVideos)
+    if size > sample:
+        i = 0
+        while abs(i) < sample:
+            video = lt.getElement(catalogVideos, i)
+            print('Title: '+video["title"]+" Channel title: "+video["channel_title"]+" trending date: "+video["trending_date"]+" Views: "+video["views"]+" Dislikes: "+video["dislikes"])
+            i-=1
+
 
 catalog = None
 """
@@ -79,7 +89,9 @@ while True:
         numberVideos = int(input("Ingrese el número de videos con más views que desea encontrar: "))
         bestCountry = input("Ingrese el pais sobre el cual quiere encontrar los mejores videos: ").lower()
         bestCategory = input("Ingrese la categoria de videos que desea consultar: ")
-        result = controller.bestVideosCategoryCountryViews(catalog,bestCountry,bestCategory,numberVideos)
+        result = controller.bestVideosCategoryCountryViews(catalog,bestCountry,bestCategory)
+        printResults(result,numberVideos)
+        print(model.findCategoryid(catalog, bestCategory))
         if result == -1:
             print("\nIngrese una categoria valida\n")
         elif result == -2:
@@ -87,11 +99,13 @@ while True:
         elif result == -3:
             print("\nNo se encontraron videos.\n")
         else:
-            print("Estos son el top " + str(numberVideos)+ " videos encontrados para el pais y la categoria: ", result)
+            print("Estos son el top " + str(numberVideos)+ " videos encontrados para el pais y la categoria.")
         
-    elif int(inputs[0])== 3:
+    elif int(inputs[0]) == 3:
         bestCountry = input("Ingrese el pais sobre el cual quiere encontrar los mejores videos: ").lower()
-        
+
+    elif int(inputs[0]) == 4:
+        pass     
 
 
 

@@ -53,7 +53,7 @@ def loadVideos(catalog):
     """
     Carga los videos del archivo. 
     """
-    videosfile =  cf.data_dir + 'videos/videos-small.csv'
+    videosfile =  cf.data_dir + 'videos/videos-large.csv'
     input_file = csv.DictReader(open(videosfile, encoding='utf-8'))
     for video in input_file:
         model.addVideo(catalog, video)
@@ -70,23 +70,13 @@ def loadCategories(catalog):
 
 #Funciones para la consulta de datos
 
-def bestVideosCategoryCountryViews(catalog,bestCountry,bestCategory,numberVideos):
-    catalogCC = initCatalog()
-    bestCategoryid = model.findCategoryid(catalog,bestCategory)
-    if bestCategoryid == -1:
-        return -1
-    else:
-        catalogCC = model.addvideoFromCatalog(catalog,catalogCC,bestCountry,bestCategoryid)
-        topVideos = lt.newList(datastructure='ARRAY_LIST')
-        if lt.size(catalogCC["videos"]) < numberVideos:
-            return -2
-        else:
-            for i in range(1, numberVideos + 1):
-                lt.addLast(topVideos, lt.getElement(catalogCC["videos"],i) )
-            if lt.size(topVideos)==0:
-                return -3
-            else:
-                return topVideos
+def bestVideosCategoryCountryViews(catalog,bestCountry,bestCategory):
+    bestCategoryid = model.findCategoryid(catalog, bestCategory)
+    bestVideos = model.addvideoFromCatalogByCountryCategory(catalog,bestCountry,bestCategoryid)
+    size = lt.size(bestVideos["videos"])
+    return model.mergeSortByViews(bestVideos, int(size))
 
-def videoMoreTimeTrendingCountry(country):
-    pass
+
+
+
+
