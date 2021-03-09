@@ -23,6 +23,7 @@
 import config as cf
 import model
 import csv
+from DISClib.ADT import list as lt
 
 
 """
@@ -30,31 +31,59 @@ El controlador se encarga de mediar entre la vista y el modelo.
 """
 
 
-def loadBooks(filename):
+# Inicialización del Catálogo de libros
+def initCatalog():
     """
-    Carga los libros del archivo.  Por cada libro se toman sus autores y por
-    cada uno de ellos, se crea en la lista de autores, a dicho autor y una
-    referencia al libro que se esta procesando.
+    Llama la funcion de inicializacion del catalogo del modelo.
     """
-    booksfile = cf.data_dir + filename
-    return model.addBooks(booksfile)
+    catalog = model.createCatalog()
+    return catalog
 
 
-def loadTags(filename):
+# Funciones para la carga de datos
+def loadData(catalog):
     """
-    Carga todos los tags del archivo y los agrega a la lista de tags
+    Carga los datos de los archivos y cargar los datos en la
+    estructura de datos
     """
-    tagsfile = cf.data_dir + filename
-    input_file = csv.DictReader(open(tagsfile, encoding='utf-8'))
-    tags = model.createTagList()
-    for tag in input_file:
-        model.addTag(tags, tag)
-    return tags
+    loadVideos(catalog)
+    loadCategories(catalog)
+
+def loadVideos(catalog):
+    """
+    Carga los videos del archivo. 
+    """
+    videosfile =  cf.data_dir + 'videos/videos-small.csv'
+    input_file = csv.DictReader(open(videosfile, encoding='utf-8'))
+    for video in input_file:
+        model.addVideo(catalog, video)
+
+def loadCategories(catalog):
+    """
+    Carga los videos del archivo. 
+    """
+    categoryfile = cf.data_dir + 'videos/category-id.csv'
+    input_file = csv.DictReader(open(categoryfile, encoding='utf-8'), delimiter='\t')
+    for category in input_file:
+        model.addCategory(catalog, category)
 
 
-def loadBooksTags(filename):
-    """
-    Carga los booktags del archivo y los agrega a una lista
-    """
-    booktagsfile = cf.data_dir + filename
-    return model.addbooktags(booktagsfile)
+#Funciones para la consulta de datos
+
+def bestVideosCategoryCountryViews(catalog,bestCountry,bestCategory,numberVideos):
+    catalogCC = initCatalog()
+    bestCategoryid = model.findCategoryid(catalog,bestCategory)
+    if bestCategoryid == -1:
+        return -1
+    else:
+        catalogCC = model.addvideoFromCatalog(catalog,catalogCC,bestCountry,bestCategoryid)
+        topVideos = lt.newList(datastructure='ARRAY_LIST')
+        if lt.size(catalogCC["videos"]) < numberVideos:
+            return -2
+        else:
+            for i in range(1, numberVideos + 1):
+                lt.addLast(topVideos, lt.getElement(catalogCC["videos"],i) )
+            if lt.size(topVideos)==0:
+                return -3
+            else:
+                return topVideos

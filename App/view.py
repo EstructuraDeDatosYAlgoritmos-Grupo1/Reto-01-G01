@@ -26,6 +26,7 @@
 import config as cf
 import sys
 import controller
+import model
 from DISClib.ADT import list as lt
 assert cf
 
@@ -39,32 +40,30 @@ operación solicitada
 
 
 def printMenu():
-    print("Opciones:")
-    print("1- Cargar Libros")
-    print("2- Cargar Tags")
-    print("3- Cargar book_tags")
+    print("Bienvenido")
+    print("1- Cargar información en el catálogo")
+    print("2- Encontrar buenos videos por categoría y país")
+    print("3- Encontrar video tendencia por país ")
+    print("4- Encontrar video tendencia por categoría")
+    print("5- Buscar los videos con más likes")
     print("0- Salir")
 
 
-def loadBooks():
+def initCatalog():
     """
-    Carga los libros
+    Inicializa el catalogo de videos
     """
-    return controller.loadBooks('GoodReads/books-small.csv')
+    return controller.initCatalog()
 
 
-def loadTags():
+def loadData(catalog):
     """
-    Carga los Tags
+    Carga los libros en la estructura de datos
     """
-    return controller.loadTags('GoodReads/tags.csv')
+    controller.loadData(catalog)
 
-def loadbooktags():
-    '''
-    Carga el archivo de booktags
-    '''
-    return controller.loadBooksTags('GoodReads/book_tags.csv')
 
+catalog = None
 """
 Menu principal
 """
@@ -73,17 +72,31 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de libros....")
-        books = loadBooks()
-        print('Total de libros cargados: ' + str(lt.size(books)))
+        catalog = initCatalog()
+        loadData(catalog)
+        print('Total de libros cargados: ' + str(lt.size(catalog['videos'])))
 
     elif int(inputs[0]) == 2:
-        print("Cargando información de tags....")
-        tags = loadTags()
-        print('Total de tags cargados: ' + str(lt.size(tags)))
+        numberVideos = int(input("Ingrese el número de videos con más views que desea encontrar: "))
+        bestCountry = input("Ingrese el pais sobre el cual quiere encontrar los mejores videos: ").lower()
+        bestCategory = input("Ingrese la categoria de videos que desea consultar: ")
+        result = controller.bestVideosCategoryCountryViews(catalog,bestCountry,bestCategory,numberVideos)
+        if result == -1:
+            print("\nIngrese una categoria valida\n")
+        elif result == -2:
+            print("\nIngrese un numero menor, no hay suficientes videos. Si esto no funciona, revise el nombre del pais ingresado\n")
+        elif result == -3:
+            print("\nNo se encontraron videos.\n")
+        else:
+            print("Estos son el top " + str(numberVideos)+ " videos encontrados para el pais y la categoria: ", result)
+        
     elif int(inputs[0])== 3:
-        print("Cargando información de book tags....")
-        booktags = loadbooktags()
-        print("Total de book tags cargados: " + str(lt.size(booktags)))
+        category = "Music"
+        catalogCC = model.createCatalog()
+        bestCountry = "canada"
+        bestCategoryid = "10"
+        print(model.addvideoFromCatalog(catalog,catalogCC,bestCountry,bestCategoryid))
+
 
 
     else:

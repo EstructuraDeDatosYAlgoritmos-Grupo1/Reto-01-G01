@@ -27,7 +27,13 @@
 
 import config as cf
 from DISClib.ADT import list as lt
+from DISClib.Algorithms.Sorting import shellsort as shes
+from DISClib.Algorithms.Sorting import insertionsort as inss
+from DISClib.Algorithms.Sorting import selectionsort as sels
+from DISClib.Algorithms.Sorting import mergesort as merge
+from DISClib.Algorithms.Sorting import quicksort as quick
 assert cf
+
 
 """
 En el modelo, se crean las estructuras de datos, es decir,
@@ -39,44 +45,51 @@ los datos.
 """
 
 
-def addBooks(booksfile):
-    """
-    Para guardar los libros provenientes del archivo CSV
-    vamos a crear una lista, en donde quedarán todos los datos.
-
-    No es importante entender como funciona esta lista por ahora.
-
-    La funcion newList crea una lista de muchas formas.  Una de ellas
-    es leyendo todo lo que encuentre en el archivo indicado por filename.
-    Cada linea del archivo quedará en una posicion de la lista.
-    """
-    books = lt.newList(datastructure='SINGLE_LINKED',
-                       filename=booksfile)
-    return books
+#Construccion de catalogos
+def createCatalog():
+    catalog = {'videos': None,'categories': None,}
+    catalog['videos']= lt.newList(datastructure='ARRAY_LIST')
+    catalog['categories'] = lt.newList(datastructure='ARRAY_LIST')
+    return catalog
 
 
-def addTag(taglist, tag):
-    """
-    Para procesar el archivo de tags vamos a usar de otra forma la lista.
-    En este caso, agregaremos cada linea del archivo a la lista, en lugar
-    de usar la opcion de crearla con el nombre del archivo.
-    """
-    lt.addLast(taglist, tag)
+#Funciones para agregar datos a un catalogo
+
+def addVideo(catalog, video):
+    lt.addLast(catalog['videos'], video)
+
+def addCategory(catalog, category):
+    t = newCategory(category['id'], category['name'])
+    lt.addLast(catalog['categories'], t)
 
 
-def createTagList():
-    """
-    Esta funcion crea una lista vacia.  Esta lista se utilizara
-    para ir guardando la informacion en el archivo de tags.
-    """
-    taglist = lt.newList(datastructure='SINGLE_LINKED')
-    return taglist
+def addvideoFromCatalog(catalog,catalogCC,bestCountry,bestCategoryid):
+    range1 = lt.size(catalog["videos"])
+    for position in range(1, range1 +1):
+        element = lt.getElement(catalog['videos'] , position)
+        if (element["country"] == bestCountry and element["category_id"]==bestCategoryid):
+            addVideo(catalogCC, element)
+    return catalogCC
 
-def addbooktags(booktagfile):
-    '''
-    Crea una lista con el archivo de book tags.
-    '''
-    
-    booktags = lt.newList(datastructure= 'SINGLE_LINKED', filename=booktagfile)
 
-    return booktags
+#Funciones para crear datos
+
+def newCategory(category_id,name):
+    category = {'id': category_id, 'name': name}
+    return category
+
+
+#Funciones de consulta
+
+def findCategoryid(catalog, category):
+    range1 = lt.size(catalog["categories"])
+    for position in range(1, range1 + 1):
+        element = lt.getElement(catalog["categories"], position)
+        if (element["name"].strip()==category):
+            return element["id"]
+    return -1
+
+#Funciones para comparar elementos dentro de una lista
+
+
+#Funciones de ordenamiento
