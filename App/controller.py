@@ -53,7 +53,7 @@ def loadVideos(catalog):
     """
     Carga los videos del archivo. 
     """
-    videosfile =  cf.data_dir + 'videos/videos-large.csv'
+    videosfile =  cf.data_dir + 'videos/videos-small.csv'
     input_file = csv.DictReader(open(videosfile, encoding='utf-8'))
     for video in input_file:
         model.addVideo(catalog, video)
@@ -81,4 +81,12 @@ def videoMoreReps(catalog,country):
     size = lt.size(catalogCountry["videos"])
     catalogCountry = model.mergeSortByVideoId(catalogCountry,size)
     return model.findTopVideoByTrendingTime(catalogCountry)
+
+def videoMoreRepsCategory(catalog,category):
+    category_id = model.findCategoryid(catalog,category)
+    catalogCategories = model.addVideosFromCatalogByCategory(catalog,category_id)
+    size = lt.size(catalogCategories["videos"])
+    listCategories = model.mergeSortByVideoId(catalogCategories,size)
+    return model.findTopVideoByTrendingTime(listCategories)
+
 

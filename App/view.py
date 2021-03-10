@@ -75,7 +75,9 @@ def printResults2(results):
     video = results[0]
     print('Titulo: '+video["title"]+"\nTitulo del canal: "+video["channel_title"]+"\nPais: "+video["country"]+"\nDias: "+str(results[1]))
 
-
+def printResults3(results):
+    video = results[0]
+    print('Titulo: ' + video["title"]+"\nTitulo del canal: " + video["channel_title"] + "\nCategory_id"+ video["category_id"] + "\nDias: " + str(results[1]))
 
 catalog = None
 """
@@ -96,13 +98,8 @@ while True:
         bestCategory = input("Ingrese la categoria de videos que desea consultar: ")
         result = controller.bestVideosCategoryCountryViews(catalog,bestCountry,bestCategory)
         printResults(result,numberVideos)
-        print(model.findCategoryid(catalog, bestCategory))
         if result == -1:
             print("\nIngrese una categoria valida\n")
-        elif result == -2:
-            print("\nIngrese un numero menor, no hay suficientes videos. Si esto no funciona, revise el nombre del pais ingresado\n")
-        elif result == -3:
-            print("\nNo se encontraron videos.\n")
         else:
             print("Estos son el top " + str(numberVideos)+ " videos encontrados para el pais y la categoria.")
         
@@ -111,8 +108,9 @@ while True:
         printResults2(controller.videoMoreReps(catalog,bestCountry))
 
     elif int(inputs[0]) == 4:
-        print("")     
-
+        category = input("Ingrese la categoria de videos que desea consultar: ")
+        printResults3(controller.videoMoreRepsCategory(catalog,category))
+        
 
 
     else:

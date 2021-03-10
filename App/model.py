@@ -81,6 +81,15 @@ def addVideosFromCatalogByCountry(catalog,country):
             lt.addLast(catalogVideos["videos"], element)
     return catalogVideos
 
+def addVideosFromCatalogByCategory(catalog,category_id):
+    catalogVideos = createCatalog()
+    range1 = lt.size(catalog["videos"])
+    for position in range(1, range1 + 1):
+        element = lt.getElement(catalog["videos"] , position)
+        if str(element["category_id"]).strip() == str(category_id).strip():
+            lt.addLast(catalogVideos["videos"], element)
+    return catalogVideos
+
 
 #Funciones para crear datos
 
