@@ -119,17 +119,6 @@ while True:
         printResults(result,numberVideos)
         print("Estos son el top " + str(numberVideos)+ " videos encontrados para el pais y la categoria.")
 
-    elif int(inputs[0]) == 6:
-        hola = model.tagos(catalog)
-        likesTag = input("Ingrese el tag de videos que desea consultar: ")
-        i = 0
-        while i < len(hola):
-            print(hola[i])
-            i = i + 1
-        print(hola[1])
-        if hola[1] == likesTag:
-           print("holafo")
-
 
     else:
         sys.exit(0)

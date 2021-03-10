@@ -91,14 +91,13 @@ def addVideosFromCatalogByCategory(catalog,category_id):
     return catalogVideos
 
 def addCatalogLikes(catalog,likesCountry,likesTag):
-    catalogCountries = addVideosFromCatalogByCountry(catalog,likesCountry)
-    catalogCountriesLikes = createCatalog()
-    for position in range(1, len(catalogCountries)):
-        if isTag(catalogCountries[position], likesTag):
-           lt.addLast(catalogCountriesLikes, catalogCountries[position])
-    return catalogCountriesLikes
-
-
+    catalogVideos = createCatalog()
+    range1 = lt.size(catalog["videos"])
+    for position in range(1, range1 + 1):
+        element = lt.getElement(catalog["videos"] , position)
+        if (element["country"] == likesCountry and likesTag in element["tags"]):
+            lt.addLast(catalogVideos["videos"], element)
+    return catalogVideos
 
 #Funciones para crear datos
 
@@ -193,20 +192,14 @@ def mergeSortByVideoId(catalog,size):
     sortedList = merge.sort(subList, cmpVideosByVideoId)
     return sortedList
 
-def mergeSortByLikes(catalog,size):
+def mergeSortBylikes(catalog,size):
     subList = lt.subList(catalog["videos"],0,size)
     subList = subList.copy()
     sortedList = merge.sort(subList, cmpVideosByLikes)
     return sortedList
 
 
-def tagos(catalog):
-    range1 = lt.size(catalog["videos"])
-    for position in range(1, range1 + 1):
-        element = lt.getElement(catalog["videos"], position)
-        hola = element["tags"]
-    bola = hola.split("|")
-    return bola
+
 
 
 
