@@ -68,8 +68,13 @@ def printResults(catalogVideos, sample):
         i = 0
         while abs(i) < sample:
             video = lt.getElement(catalogVideos, i)
-            print('Title: '+video["title"]+" Channel title: "+video["channel_title"]+" trending date: "+video["trending_date"]+" Views: "+video["views"]+" Dislikes: "+video["dislikes"])
+            print('Titulo: '+video["title"]+"\nTitulo del canal: "+video["channel_title"]+"\nFecha en tendencia: "+video["trending_date"]+"\nViews: "+video["views"]+"\nDislikes: "+video["dislikes"])
             i-=1
+
+def printResults2(results):
+    video = results[0]
+    print('Titulo: '+video["title"]+"\nTitulo del canal: "+video["channel_title"]+"\nPais: "+video["country"]+"\nDias: "+str(results[1]))
+
 
 
 catalog = None
@@ -103,9 +108,10 @@ while True:
         
     elif int(inputs[0]) == 3:
         bestCountry = input("Ingrese el pais sobre el cual quiere encontrar los mejores videos: ").lower()
+        printResults2(controller.videoMoreReps(catalog,bestCountry))
 
     elif int(inputs[0]) == 4:
-        pass     
+        print("")     
 
 
 

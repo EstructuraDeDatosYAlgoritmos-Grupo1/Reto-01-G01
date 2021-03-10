@@ -76,7 +76,9 @@ def bestVideosCategoryCountryViews(catalog,bestCountry,bestCategory):
     size = lt.size(bestVideos["videos"])
     return model.mergeSortByViews(bestVideos, int(size))
 
-
-
-
+def videoMoreReps(catalog,country):
+    catalogCountry = model.addVideosFromCatalogByCountry(catalog,country)
+    size = lt.size(catalogCountry["videos"])
+    catalogCountry = model.mergeSortByVideoId(catalogCountry,size)
+    return model.findTopVideoByTrendingTime(catalogCountry)
 

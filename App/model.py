@@ -52,10 +52,6 @@ def createCatalog():
     catalog['categories'] = lt.newList(datastructure='ARRAY_LIST')
     return catalog
 
-def createCatalogOfCountry(catalog, country):
-    catalogCountry = createCatalog()
-    catalogCountry = addVideosFromCatalogByCountry(catalog,catalogCountry,country)
-    return catalogCountry
 
 
 #Funciones para agregar datos a un catalogo
@@ -76,12 +72,13 @@ def addvideoFromCatalogByCountryCategory(catalog,bestCountry,bestCategoryid):
             addVideo(bestVideos, video)
     return bestVideos
 
-def addVideosFromCatalogByCountry(catalog,catalogVideos,country):
+def addVideosFromCatalogByCountry(catalog,country):
+    catalogVideos = createCatalog()
     range1 = lt.size(catalog["videos"])
     for position in range(1, range1 + 1):
         element = lt.getElement(catalog["videos"] , position)
         if element["country"] == country:
-            addVideo(catalogVideos, element)
+            lt.addLast(catalogVideos["videos"], element)
     return catalogVideos
 
 
@@ -102,12 +99,51 @@ def findCategoryid(catalog, category):
             return element["id"]
     return -1
 
-def findTopVideoByTrendingTime(catalogCountry):
-    pass
+def repCountForVideo(sortedCatalog,videoid,initialPos):
+    reps = 0
+    position = initialPos
+    range1 = lt.size(sortedCatalog)
+    while position < range1 +1:
+        videoComp = lt.getElement(sortedCatalog, position)
+        if videoComp["video_id"]== videoid:
+            reps +=1
+        else:
+            break
+        position +=1
+    return reps
+
+
+
+def findTopVideoByTrendingTime(sortedCatalog):
+    videoMayor = None
+    repsMayor = 0
+    videoComp = None
+    repsComp = 0
+    position = 1
+    while position <= lt.size(sortedCatalog):
+        videoComp = lt.getElement(sortedCatalog,position)
+        repsComp = repCountForVideo(sortedCatalog,videoComp["video_id"],position)
+        if repsComp > repsMayor:
+            videoMayor = lt.getElement(sortedCatalog,position)
+            repsMayor = repsComp
+        position+=repsComp
+    return (videoMayor,repsMayor)
+
+    
+    
+
+        
+
 #Funciones para comparar elementos dentro de una lista
 
 def cmpVideosByViews(video1, video2):
     if float(video1['views']) < float(video2['views']):
+        return True
+    else:
+        return False
+
+def cmpVideosByVideoId(video1, video2):
+    if video1["video_id"] < video2["video_id"]:
         return True
     else:
         return False
@@ -118,4 +154,11 @@ def mergeSortByViews(catalog,size):
     subList = lt.subList(catalog["videos"],0,size)
     subList = subList.copy()
     sortedList = merge.sort(subList, cmpVideosByViews)
+    return sortedList
+
+
+def mergeSortByVideoId(catalog,size):
+    subList = lt.subList(catalog["videos"],0,size)
+    subList = subList.copy()
+    sortedList = quick.sort(subList, cmpVideosByVideoId)
     return sortedList
