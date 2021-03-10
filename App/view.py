@@ -77,7 +77,7 @@ def printResults2(results):
 
 def printResults3(results):
     video = results[0]
-    print('Titulo: ' + video["title"]+"\nTitulo del canal: " + video["channel_title"] + "\nCategory_id"+ video["category_id"] + "\nDias: " + str(results[1]))
+    print('Titulo: ' + video["title"]+"\nTitulo del canal: " + video["channel_title"] + "\nCategory_id "+ video["category_id"] + "\nDias: " + str(results[1]))
 
 catalog = None
 """
