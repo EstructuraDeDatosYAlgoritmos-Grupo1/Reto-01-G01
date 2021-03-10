@@ -90,6 +90,15 @@ def addVideosFromCatalogByCategory(catalog,category_id):
             lt.addLast(catalogVideos["videos"], element)
     return catalogVideos
 
+def addCatalogLikes(catalog,likesCountry,likesTag):
+    catalogCountries = addVideosFromCatalogByCountry(catalog,likesCountry)
+    catalogCountriesLikes = createCatalog()
+    for position in range(1, len(catalogCountries)):
+        if isTag(catalogCountries[position], likesTag):
+           lt.addLast(catalogCountriesLikes, catalogCountries[position])
+    return catalogCountriesLikes
+
+
 
 #Funciones para crear datos
 
@@ -138,10 +147,16 @@ def findTopVideoByTrendingTime(sortedCatalog):
         position+=repsComp
     return (videoMayor,repsMayor)
 
-    
-    
-
-        
+def isTag(video, tag):
+    isin = false
+    tags = video["tags"]
+    tags1 = tags.split("|")
+    while i < len(tags1):
+        if tags1[i] == tags:
+            isin = True
+        i = i+1
+    return isin    
+  
 
 #Funciones para comparar elementos dentro de una lista
 
@@ -153,6 +168,12 @@ def cmpVideosByViews(video1, video2):
 
 def cmpVideosByVideoId(video1, video2):
     if video1["video_id"] < video2["video_id"]:
+        return True
+    else:
+        return False
+
+def cmpVideosByLikes(video1, video2):
+    if float(video1['likes']) < float(video2['likes']):
         return True
     else:
         return False
@@ -169,5 +190,26 @@ def mergeSortByViews(catalog,size):
 def mergeSortByVideoId(catalog,size):
     subList = lt.subList(catalog["videos"],0,size)
     subList = subList.copy()
-    sortedList = quick.sort(subList, cmpVideosByVideoId)
+    sortedList = merge.sort(subList, cmpVideosByVideoId)
     return sortedList
+
+def mergeSortByLikes(catalog,size):
+    subList = lt.subList(catalog["videos"],0,size)
+    subList = subList.copy()
+    sortedList = merge.sort(subList, cmpVideosByLikes)
+    return sortedList
+
+
+def tagos(catalog):
+    range1 = lt.size(catalog["videos"])
+    for position in range(1, range1 + 1):
+        element = lt.getElement(catalog["videos"], position)
+        hola = element["tags"]
+    bola = hola.split("|")
+    return bola
+
+
+
+
+
+    

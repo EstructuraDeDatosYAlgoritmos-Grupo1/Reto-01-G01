@@ -89,8 +89,8 @@ def videoMoreRepsCategory(catalog,category):
     listCategories = model.mergeSortByVideoId(catalogCategories,size)
     return model.findTopVideoByTrendingTime(listCategories)
 
-def mostLikes(catalog,likesCountry,likesTag)
+def videoMostLikes(catalog,likesCountry,likesTag):
     catalogLikes = model.addCatalogLikes(catalog,likesCountry,likesTag)
-    size = lt.size(bestVideos["videos"])
-    return model.mergeSortBylikes(bestVideos, int(size))
+    size = lt.size(catalogLikes["videos"])
+    return model.mergeSortBylikes(catalogLikes, int(size))
 
