@@ -110,9 +110,15 @@ while True:
     elif int(inputs[0]) == 4:
         category = input("Ingrese la categoria de videos que desea consultar: ")
         printResults3(controller.videoMoreRepsCategory(catalog,category))
+
+    elif int(inputs[0]) == 5:
+        numberVideos = int(input("Ingrese el número de videos con más likes que desea encontrar: "))
+        likesCountry = input("Ingrese el pais sobre el cual quiere encontrar los videos con mas likes: ").lower()
+        likesTag = input("Ingrese el tag de videos que desea consultar: ")
+        result = controller.mostLikes(catalog,likesCountry,LikesTag)
+        printResults(result,numberVideos)
+        print("Estos son el top " + str(numberVideos)+ " videos encontrados para el pais y la categoria.")
         
-
-
     else:
         sys.exit(0)
 sys.exit(0)
