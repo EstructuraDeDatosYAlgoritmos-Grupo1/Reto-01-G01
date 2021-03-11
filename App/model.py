@@ -146,15 +146,6 @@ def findTopVideoByTrendingTime(sortedCatalog):
         position+=repsComp
     return (videoMayor,repsMayor)
 
-def isTag(video, tag):
-    isin = false
-    tags = video["tags"]
-    tags1 = tags.split("|")
-    while i < len(tags1):
-        if tags1[i] == tags:
-            isin = True
-        i = i+1
-    return isin    
   
 
 #Funciones para comparar elementos dentro de una lista
