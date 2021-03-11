@@ -79,6 +79,22 @@ def printResults3(results):
     video = results[0]
     print('Titulo: ' + video["title"]+"\nTitulo del canal: " + video["channel_title"] + "\nCategory_id "+ video["category_id"] + "\nDias: " + str(results[1]))
 
+def printResults4(catalog, sample):
+    size = lt.size(catalog)
+    videoIds = []
+    if size > sample:
+        i= 0
+        results = 0
+        while abs(i) < size and results < sample:
+            video = lt.getElement(catalog, i)
+            if video["video_id"] not in videoIds:
+                videoIds.append(video["video_id"])
+                print('Titulo: ' + video["title"]+"\nTitulo del canal: " + video["channel_title"] + "\nViews "+ video["views"] + "\nLikes: " + video["likes"]+ "\nDisikes: " + video["dislikes"]+"\nTags"+video["tags"])
+                results += 1
+            i-=1
+
+
+
 catalog = None
 """
 Menu principal
@@ -116,7 +132,7 @@ while True:
         likesCountry = input("Ingrese el pais sobre el cual quiere encontrar los videos con mas likes: ").lower()
         likesTag = input("Ingrese el tag de videos que desea consultar: ")
         result = controller.videoMostLikes(catalog,likesCountry,likesTag)
-        printResults(result,numberVideos)
+        printResults4(result,numberVideos)
         print("Estos son el top " + str(numberVideos)+ " videos encontrados para el pais y la categoria.")
 
 

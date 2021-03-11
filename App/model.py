@@ -162,6 +162,12 @@ def cmpVideosByVideoId(video1, video2):
     else:
         return False
 
+def cmpVideosByTitle(video1, video2):
+    if video1["title"] < video2["title"]:
+        return True
+    else:
+        return False
+
 def cmpVideosByLikes(video1, video2):
     if float(video1['likes']) < float(video2['likes']):
         return True
@@ -187,6 +193,12 @@ def mergeSortBylikes(catalog,size):
     subList = lt.subList(catalog["videos"],0,size)
     subList = subList.copy()
     sortedList = merge.sort(subList, cmpVideosByLikes)
+    return sortedList
+
+def mergeSortByTitle(catalog,size):
+    subList = lt.subList(catalog["videos"],0,size)
+    subList = subList.copy()
+    sortedList = merge.sort(subList, cmpVideosByTitle)
     return sortedList
 
 
